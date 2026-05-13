@@ -56,7 +56,9 @@ curl -X GET "https://api.cloudflare.com/client/v4/accounts" \
   -H "Content-Type: application/json"
 ```
 
-The `result[].id` field in the JSON response is your Account ID.## Usage
+The `result[].id` field in the JSON response is your Account ID.
+
+## Usage
 
 ### 1. Clone and configure
 
@@ -131,6 +133,100 @@ After applying, use the output `d1_database_id` in your `wrangler.toml`:
 binding = "DB"
 database_name = "my-database"
 database_id = "<d1_database_id from terraform output>"
+```
+
+## Testing with the `examples/` folder
+
+The [`examples/`](./examples) folder contains a Node.js script (`index.js`) that verifies the provisioned D1 database by running full CRUD operations through the Cloudflare REST API using the built-in `fetch`.
+
+### Requirements
+
+- Node.js `>= 18` (for native `fetch`)
+
+### 1. Get the D1 database ID from Terraform
+
+After `terraform apply`, capture the database UUID:
+
+```bash
+terraform output d1_database_id
+```
+
+### 2. Configure environment variables
+
+```bash
+cd examples
+cp .env.example .env
+```
+
+Edit `examples/.env` and fill in the values:
+
+```dotenv
+CLOUDFLARE_API_TOKEN=your-api-token-here
+CLOUDFLARE_ACCOUNT_ID=your-account-id-here
+CLOUDFLARE_D1_DATABASE_ID=your-d1-database-id-here
+```
+
+> `examples/.env` is gitignored — `.env.example` is committed as a template.
+
+### 3. Load the env vars and run the script
+
+**Linux / macOS (bash):**
+
+```bash
+cd examples
+set -a && source .env && set +a
+node index.js
+```
+
+**Windows (PowerShell):**
+
+```powershell
+cd examples
+Get-Content .env | ForEach-Object {
+  if ($_ -match '^\s*([^#][^=]*)=(.*)$') {
+    [Environment]::SetEnvironmentVariable($matches[1].Trim(), $matches[2].Trim(), "Process")
+  }
+}
+node index.js
+```
+
+**Windows (cmd):**
+
+```cmd
+cd examples
+for /f "usebackq tokens=1,* delims==" %a in (".env") do set "%a=%b"
+node index.js
+```
+
+Or inline them on a single line:
+
+```cmd
+set CLOUDFLARE_API_TOKEN=... && set CLOUDFLARE_ACCOUNT_ID=... && set CLOUDFLARE_D1_DATABASE_ID=... && node examples\index.js
+```
+
+### What the script does
+
+1. Creates a `users` table if it does not exist
+2. Inserts a demo user
+3. Fetches the user by id
+4. Updates the user
+5. Lists all users
+6. Deletes the demo user
+
+Expected output (abbreviated):
+
+```
+→ Creating table 'users' if not exists...
+→ Creating user: Alice <demo+...@example.com>
+Created: { id: 1, name: 'Alice', ... }
+→ Fetching user id=1
+Fetched: { id: 1, ... }
+→ Updating user id=1
+Updated: { id: 1, name: 'Alice Updated', ... }
+→ Listing users
+All users: [ { ... } ]
+→ Deleting user id=1
+Deleted rows: 1
 ```
 
 ## Security Notes

@@ -1,0 +1,5 @@
+# Copy this file to terraform.tfvars and fill in your values
+
+cloudflare_api_token  = "your-api-token-here"
+cloudflare_account_id = "your-account-id-here"
+database_name         = "my-database"

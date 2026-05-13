@@ -9,5 +9,11 @@
 .vscode/
 .idea/
 
+# terraform variables
 terraform.tfvars
 !terraform.tfvars.example
+
+
+# environment variables
+.env
+!.env.example

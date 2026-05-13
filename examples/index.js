@@ -3,14 +3,18 @@
  *
  * Requires Node.js >= 18 (native fetch).
  *
- * Set the following environment variables before running:
+ * Set the following environment variables in examples/.env before running:
  *   CLOUDFLARE_API_TOKEN   - API token with "D1 Edit" permission
  *   CLOUDFLARE_ACCOUNT_ID  - your Cloudflare account ID
  *   CLOUDFLARE_D1_DATABASE_ID - the D1 database UUID (from terraform output)
  *
- * Run:
- *   node examples/index.js
+ * Install dependencies and run:
+ *   cd examples
+ *   npm install
+ *   node index.js
  */
+
+require("dotenv").config();
 
 const API_TOKEN = process.env.CLOUDFLARE_API_TOKEN;
 const ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID;

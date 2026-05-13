@@ -1,0 +1,16 @@
+{
+  "name": "terraform-cloudflare-d1-example",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Node.js CRUD example for a Cloudflare D1 database provisioned via Terraform",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}

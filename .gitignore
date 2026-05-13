@@ -17,3 +17,9 @@ terraform.tfvars
 # environment variables
 .env
 !.env.example
+
+# node
+node_modules/
+
+# node modules
+node_modules/

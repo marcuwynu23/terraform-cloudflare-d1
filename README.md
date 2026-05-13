@@ -137,7 +137,7 @@ database_id = "<d1_database_id from terraform output>"
 
 ## Testing with the `examples/` folder
 
-The [`examples/`](./examples) folder contains a Node.js script (`index.js`) that verifies the provisioned D1 database by running full CRUD operations through the Cloudflare REST API using the built-in `fetch`.
+The [`examples/`](./examples) folder contains a Node.js script (`index.js`) that verifies the provisioned D1 database by running full CRUD operations through the Cloudflare REST API using the built-in `fetch`. Environment variables are loaded from `examples/.env` via [`dotenv`](https://www.npmjs.com/package/dotenv).
 
 ### Requirements
 
@@ -168,40 +168,18 @@ CLOUDFLARE_D1_DATABASE_ID=your-d1-database-id-here
 
 > `examples/.env` is gitignored — `.env.example` is committed as a template.
 
-### 3. Load the env vars and run the script
-
-**Linux / macOS (bash):**
+### 3. Install dependencies and run
 
 ```bash
 cd examples
-set -a && source .env && set +a
+npm install
 node index.js
 ```
 
-**Windows (PowerShell):**
+Or using the npm script:
 
-```powershell
-cd examples
-Get-Content .env | ForEach-Object {
-  if ($_ -match '^\s*([^#][^=]*)=(.*)$') {
-    [Environment]::SetEnvironmentVariable($matches[1].Trim(), $matches[2].Trim(), "Process")
-  }
-}
-node index.js
-```
-
-**Windows (cmd):**
-
-```cmd
-cd examples
-for /f "usebackq tokens=1,* delims==" %a in (".env") do set "%a=%b"
-node index.js
-```
-
-Or inline them on a single line:
-
-```cmd
-set CLOUDFLARE_API_TOKEN=... && set CLOUDFLARE_ACCOUNT_ID=... && set CLOUDFLARE_D1_DATABASE_ID=... && node examples\index.js
+```bash
+npm start
 ```
 
 ### What the script does

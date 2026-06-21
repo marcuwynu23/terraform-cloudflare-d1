@@ -115,6 +115,39 @@ terraform destroy
 | `d1_database_id`   | UUID of the D1 database |
 | `d1_database_name` | Name of the D1 database |
 
+---
+
+## Usage as a Module
+
+Reference this repository as a Terraform module in your own configurations:
+
+```hcl
+module "d1_database" {
+  source = "github.com/marcuwynu23/terraform-cloudflare-d1?ref=main"
+
+  cloudflare_api_token  = var.cloudflare_api_token
+  cloudflare_account_id = var.cloudflare_account_id
+  database_name         = "my-database"
+}
+```
+
+Then use the outputs in your configuration:
+
+```hcl
+# Example: bind the database to a Cloudflare Worker
+resource "cloudflare_workers_script" "worker" {
+  # ...
+  d1_database_bindings {
+    name    = "DB"
+    id      = module.d1_database.d1_database_id
+  }
+}
+```
+
+All variables and outputs documented below are available when using this as a module.
+
+---
+
 ## Optional Configuration
 
 The `cloudflare_d1_database` resource supports two optional arguments (commented in `main.tf`):

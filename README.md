@@ -119,15 +119,28 @@ terraform destroy
 
 Reference this repository as a Terraform module in your own configurations:
 
-```hcl
-module "d1_database" {
-  source = "github.com/marcuwynu23/terraform-cloudflare-d1?ref=main"
-
-  cloudflare_api_token  = var.cloudflare_api_token
-  cloudflare_account_id = var.cloudflare_account_id
-  database_name         = "my-database"
-}
-```
+> **Option 1**: Terraform Registry (recommended)
+> ```hcl
+> module "d1" {
+>   source  = "marcuwynu23/d1/cloudflare"
+>   version = "1.0.0"
+>
+>   cloudflare_api_token  = var.cloudflare_api_token
+>   cloudflare_account_id = var.cloudflare_account_id
+>   database_name         = "my-database"
+> }
+> ```
+>
+> **Option 2**: GitHub source
+> ```hcl
+> module "d1" {
+>   source = "github.com/marcuwynu23/terraform-cloudflare-d1?ref=main"
+>
+>   cloudflare_api_token  = var.cloudflare_api_token
+>   cloudflare_account_id = var.cloudflare_account_id
+>   database_name         = "my-database"
+> }
+> ```
 
 Then use the outputs in your configuration:
 
